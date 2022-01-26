@@ -1,0 +1,93 @@
+clc;
+clear;
+
+load('Ad.mat'); % camera 1 
+load('Ad2.mat'); % camera 2
+load('chips20.mat');
+load('illum.mat');
+
+%values and plot for cam1
+x1 = Ad(:, 1, :);
+y1 = Ad(:, 2, :);
+z1= Ad(:, 3, :);
+
+% figure(1);
+% 
+% plot(x1, 'red');
+% 
+% hold on;
+% 
+% plot(y1, 'green');
+% 
+% hold on;
+% 
+% plot(z1, 'blue');
+
+%values and plot for cam 2
+x2 = Ad2(:, 1, :);
+y2 = Ad2(:, 2, :);
+z2= Ad2(:, 3, :);
+
+% figure(2);
+% 
+% plot(x2, 'red');
+% 
+%  hold on;
+% 
+%  plot(y2, 'green');
+% 
+%  hold on;
+% 
+%  plot(z2, 'blue');
+
+
+ d = Ad' *(chips20(:, :).* CIED65)';
+  RGB_raw_D65 = d;
+ 
+%    showRGB(d')
+ 
+d2 = Ad2' *(chips20(:, :).* CIED65)';
+
+%   showRGB(d2')
+
+
+%% 2
+
+n1 = Ad' *(ones(1, 61))' ;
+
+n2 = Ad2' *(ones(1, 61))';
+
+% RGB_cal_D65 = Ad' *(chips20(:,:).*CIED65)' ;
+
+RGB_cal_D65 = RGB_raw_D65 ./ n1;
+
+RGB_cal_D65_2 = d2 ./ n2;
+
+showRGB(RGB_cal_D65')
+
+showRGB(RGB_cal_D65_2')
+
+
+
+
+
+RGB_raw_A = Ad' *(chips20(:, :).* CIEA)';
+
+RGB_raw_A_2 = Ad2' *(chips20(:, :).* CIEA)';
+
+RGB_cal_A = RGB_raw_A ./ n1;
+
+RGB_cal_A_2 = RGB_raw_A_2 ./ n2;
+
+% showRGB(RGB_raw_A')
+
+% showRGB(RGB_raw_A_2')
+
+showRGB(RGB_cal_A')
+
+showRGB(RGB_cal_A_2')
+
+
+
+
+
