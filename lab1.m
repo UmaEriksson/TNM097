@@ -5,6 +5,7 @@ load('Ad.mat'); % camera 1
 load('Ad2.mat'); % camera 2
 load('chips20.mat');
 load('illum.mat');
+load('xyz.mat');
 
 %values and plot for cam1
 x1 = Ad(:, 1, :);
@@ -69,7 +70,7 @@ RGB_cal_D65_2 = d2 ./ n2;
 
 %plot(waverange, CIED65);
 
-hold on; 
+% hold on; 
 
 % plot(waverange, CIEA);
 
@@ -92,15 +93,32 @@ cald65 = RGB_raw_D65  ./ n3;
 
 % showRGB(cald65')
 %  showRGB(RGB_raw_A_2')
-
- showRGB(RGB_cal_A')
- 
- showRGB(cald65')
+% 
+%  showRGB(RGB_cal_A')
+%  
+%  showRGB(cald65')
 % 
 % showRGB(RGB_cal_A_2')
 
 
 %% Del 3
+ n5 = xyz' * ones(1,61)';
+ XYZ_D65_REF = xyz' *(chips20(:, :).* CIED65)';
+ 
+ XYZ_D65_REF_CAL = XYZ_D65_REF .* n5;
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
 
 
 
