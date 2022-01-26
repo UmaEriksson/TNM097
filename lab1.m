@@ -62,32 +62,45 @@ n2 = Ad2' *(ones(1, 61))';
 RGB_cal_D65 = RGB_raw_D65 ./ n1;
 
 RGB_cal_D65_2 = d2 ./ n2;
+% 
+% showRGB(RGB_cal_D65')
+% 
+% showRGB(RGB_cal_D65_2')
 
-showRGB(RGB_cal_D65')
+%plot(waverange, CIED65);
 
-showRGB(RGB_cal_D65_2')
+hold on; 
+
+% plot(waverange, CIEA);
 
 
+n3 = Ad' *(CIED65)' ;
 
+n4 = Ad' *(CIEA)';
 
 
 RGB_raw_A = Ad' *(chips20(:, :).* CIEA)';
 
-RGB_raw_A_2 = Ad2' *(chips20(:, :).* CIEA)';
+% RGB_raw_A_2 = Ad2' *(chips20(:, :).* CIEA)';
 
-RGB_cal_A = RGB_raw_A ./ n1;
+RGB_cal_A = RGB_raw_A ./ n4;
 
-RGB_cal_A_2 = RGB_raw_A_2 ./ n2;
+cald65 = RGB_raw_D65  ./ n3;
+% RGB_cal_A_2 = RGB_raw_A_2 ./ n2;
 
 % showRGB(RGB_raw_A')
 
-% showRGB(RGB_raw_A_2')
+% showRGB(cald65')
+%  showRGB(RGB_raw_A_2')
 
-showRGB(RGB_cal_A')
+ showRGB(RGB_cal_A')
+ 
+ showRGB(cald65')
+% 
+% showRGB(RGB_cal_A_2')
 
-showRGB(RGB_cal_A_2')
 
-
+%% Del 3
 
 
 
