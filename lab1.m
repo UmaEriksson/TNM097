@@ -6,6 +6,8 @@ load('Ad2.mat'); % camera 2
 load('chips20.mat');
 load('illum.mat');
 load('xyz.mat');
+load('M_XYZ2RGB');
+%load('Polynomial_poly.m'),
 
 %values and plot for cam1
 x1 = Ad(:, 1, :);
@@ -102,23 +104,56 @@ cald65 = RGB_raw_D65  ./ n3;
 
 
 %% Del 3
- n5 = xyz' * ones(1,61)';
- XYZ_D65_REF = xyz' *(chips20(:, :).* CIED65)';
+
+% 3.1
+k = (xyz(:, 2)' * CIED65');
+k = 100/k;
+% vi har en ref k. Nu ska vi jämföra den med tre olika uträkningar
+
+XYZ_D65_REF = xyz' *(chips20(:, :).* CIED65)';
  
- XYZ_D65_REF_CAL = XYZ_D65_REF .* n5;
+XYZ_D65_REF = (XYZ_D65_REF .* k)';
  
- 
- 
- 
+% 3.2
 
+M_XYZ2RGB_inverse = inv(M_XYZ2RGB);
 
+%res_XYZ = RGB_cal_D65' * M_XYZ2RGB_inverse; % XYZ-värderna
+res_XYZ = (M_XYZ2RGB_inverse * RGB_cal_D65)'; % XYZ-värderna estimerat
 
+[resL, resA, resB] = xyz2lab(res_XYZ(:,1), res_XYZ(:,2), res_XYZ(:,3));
+[refL, refA, refB] = xyz2lab(XYZ_D65_REF(:,1), XYZ_D65_REF(:,2), XYZ_D65_REF(:,3));
 
+[mean, max] = EuclidDis(resL, resA, resB, refL, refA, refB);
 
+% 3.3
+% figure(1)
+% plot(waverange, Ad);
+% 
+% figure(2)
+% plot(waverange, xyz);
+% What does it mean???
 
+% 3.4
 
+D = RGB_cal_D65;
+D = D';
+C = XYZ_D65_REF;
 
+A = pinv(D)*C;
 
+res_XYZ_2 = D*A;
+[resL2, resA2, resB2] = xyz2lab(res_XYZ_2(:,1), res_XYZ_2(:,2), res_XYZ_2(:,3));
 
+[mean2, max2] = EuclidDis(resL2, resA2, resB2, refL, refA, refB);
+
+% 3.5
+
+A = Optimize_poly(RGB_cal_D65, XYZ_D65_REF');
+res3 = Polynomial_regression(RGB_cal_D65,A);
+res3 = res3';
+
+[resL3, resA3, resB3] = xyz2lab(res3(:,1), res3(:,2), res3(:,3));
+[mean3, max3] = EuclidDis(resL3, resA3, resB3, refL, refA, refB);
 
 
