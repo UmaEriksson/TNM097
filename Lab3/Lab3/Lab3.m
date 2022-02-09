@@ -72,11 +72,11 @@ P_gray_t = P_gray_t >= 0.5;
 
 P_gray_h = dither(P_gray);
 
-figure(5)
-imshow(P_gray_t);
-
-figure(6)
-imshow(P_gray_h);
+% figure(5)
+% imshow(P_gray_t);
+% 
+% figure(6)
+% imshow(P_gray_h);
 
 SNR_t = mysnr(P_gray, P_gray - P_gray_t);
 SNR_h = mysnr(P_gray, P_gray - P_gray_h);
@@ -85,12 +85,12 @@ SNR_h = mysnr(P_gray, P_gray - P_gray_h);
 % threshold suger lite, halftoning är lite bättre, liknar bilden mer. 
 %Terrible snr what is this fråga om snr varf är h sämre??????
 
+%% 2.2
 
 
+%imLab = rgb2lab(P_color);
 
-
-
-
+% r_half = 
 
 
 
