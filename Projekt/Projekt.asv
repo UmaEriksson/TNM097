@@ -1,0 +1,62 @@
+
+% size of bead matrix
+n = 30 
+% bead matrix 
+beads = zeros(n,3,3);
+
+% %counter
+% m = 1;
+% 
+% %hur många steg
+% s = 1/n;
+% 
+% for n_r = 0:s:1
+%     
+% beads(m, :, 1) = n_r;
+% 
+% m = m +1;
+%  
+% end
+% 
+% m = 1;
+% for n_g = 0:s:1
+%     
+% beads(m, :, 2) = n_g;
+% 
+% m = m +1;
+%  
+% end
+% 
+% m = 1
+% for n_b = 0:s:1
+%     
+% beads(m, :, 3) = n_b;
+% 
+% m = m +1;
+%  
+% end
+% 
+% figure(1)
+% imshow(beads)
+
+% R = rand(100,100,3);
+% 
+% figure(1)
+% imshow(R);
+
+paper = zeros(360,360); %create empty array
+[y x] = size(paper); %define y,x as size of array
+r = 0.1; %define radius of a circle
+for i=1:y
+    for j=1:x
+        if ((i-y/2)^2)+((j-x/2)^2)<(r^2);  %define origin is at the center
+            paper(i,j) = 1;  %define array inside the circle eq. = 1
+        end
+    end
+end
+imshow(paper);  %show image
+
+
+
+
+
