@@ -1,11 +1,11 @@
-function [palletteColor] = findColor(pallette, orgColor)
+function [palletteColor] = findColor(orgColor)
  % figure(21)
 % imshow(orgColor);
 orgColor_lab = rgb2lab(orgColor);
 % figure(22)
 % imshow(orgColor_lab);
 
-% pallette = rand(5,5,3); 
+pallette = rand(5,5,3); 
 pallette_lab = pallette;
 pallette_lab = rgb2lab(pallette_lab);
 %pallette_lab(:,:,1) = rgb2lab(pallette(:,:,1));
@@ -16,7 +16,7 @@ pallette_lab = rgb2lab(pallette_lab);
 
 test = pallette_lab(1,5,1)
 
-min_dis = 10000;
+min_dis = 1000;
 index_row = 0;
 index_col = 0;
 
@@ -40,17 +40,15 @@ end
 
 final_Color = pallette_lab(index_row, index_col, :);
 
- figure(23)
- imshow(pallette);
+ %figure(23)
+ %imshow(pallette_lab);
 
 pallette_final = lab2rgb(final_Color);
 
-orgColor
-
 show_org_color = ones(100, 100, 3);
-show_org_color(:,:, 1)= show_org_color(:,:,1).*orgColor(1,1,1);
-show_org_color(:,:, 2)= show_org_color(:,:,2).*orgColor(1,1,2);
-show_org_color(:,:, 3)= show_org_color(:,:,3).*orgColor(1,1,3);
+show_org_color(:,:, 1)= show_org_color(:,:,1).*pallette_final(:,:,1);
+show_org_color(:,:, 2)= show_org_color(:,:,2).*pallette_final(:,:,2);
+show_org_color(:,:, 3)= show_org_color(:,:,3).*pallette_final(:,:,3);
 
 show_pal_color = ones(100, 100, 3);
 show_pal_color(:,:, 1)= show_pal_color(:,:,1).*pallette_final(:,:,1);
@@ -61,7 +59,7 @@ show_pal_color(:,:, 3)= show_pal_color(:,:,3).*pallette_final(:,:,3);
 imshow(show_org_color);
 
 figure(37)
-imshow(show_pal_color);
+imshow(palette_final);
  
  palletteColor = pallette_final;
  

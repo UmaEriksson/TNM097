@@ -31,8 +31,8 @@ for i = 1:size(p)
 
 end
 
-figure(1)
-imshow(p);
+% figure(1)
+% imshow(p);
 
 %% skapa temp reproduktions bild med defult pärlor
 
@@ -42,7 +42,31 @@ defaultPurl(:,:,1) = defaultPurl(:,:,1) >= 0.5;
 defaultPurl(:,:,2) = defaultPurl(:,:,2) >= 0.5;
 defaultPurl(:,:,3) = defaultPurl(:,:,3) >= 0.5;
 
-figure(2)
+colorStep = 1;
+nrOfHue = 10;
+hueStep = 1/nrOfHue;
+currentHue = 1;
+
+p = zeros(30,30,3);
+% skapa färger 
+p(:,1:10,1) = 1;
+p(:,11:20,2) = 1;
+p(:,21:30,3) = 1;
+
+%skapa olika nyanser för färgerna ovan
+for i = 1:size(p)
+    p(i,1:10,1) = 1*colorStep;
+    p(i,11:20,2) = 1*colorStep;
+    p(i,21:30,3) = 1*colorStep;
+
+    if mod(i,size(p)/nrOfHue) == 0 
+        colorStep = colorStep - hueStep;
+    end
+
+end
+
+
+% figure(2)
 %imshow(defaultPurl);
 
 % testar att ändra färgern till rött
@@ -153,7 +177,7 @@ tempColor = zeros(1,3);
 tempColor = setColor(tempColor, 1, 0, 0)
 %figure(30)
 %imshow(tempColor)
-palletteColor = findColor(tempColor)
+palletteColor = findColor(p, tempColor)
 
 
 % hur stor ska reproduktionen vara?
