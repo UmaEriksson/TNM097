@@ -1,12 +1,10 @@
 function [rep] = createReproduction(org, purl, pallette)
 
 % ju mindre org resizseas till. desto större blir pärlorna
-org_reSize = imresize( org , 0.05);
+org_reSize = imresize( org , 0.12);
 
-
-size(org_reSize)
 [row, col, dim] = size(org_reSize);
- rep = [];
+rep = [];
 for j = 1:row
     
     newRow = [];
@@ -18,17 +16,17 @@ for j = 1:row
         palletteColor = findColor(pallette, orgColor);
 
         
-%         size(palletteColor)
+        size(palletteColor)
 
         % här vill vi ha hittat den slutliga färgen som pärlan ska ha 
     newPurl = setColor(purl, palletteColor(:,:,1),palletteColor(:,:,2),palletteColor(:,:,3)); 
     newRow = cat(2, newRow, newPurl);
     
-    
+    i = i +1;
     end
 
    rep = cat(1, rep, newRow);
-
+j 
 end 
 
 end

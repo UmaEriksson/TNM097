@@ -55,9 +55,27 @@ p(:,21:30,3) = 1;
 
 %skapa olika nyanser för färgerna ovan
 for i = 1:size(p)
-    p(i,1:10,1) = 1*colorStep;
-    p(i,11:20,2) = 1*colorStep;
-    p(i,21:30,3) = 1*colorStep;
+    % R�d
+    p(i,1:5,1) = 1*colorStep;
+    
+    % gul?
+    p(i,6:10,1) = 1*colorStep;
+    p(i,6:10,2) = 1*colorStep;
+
+    % gr�n
+    p(i,11:15,2) = 1*colorStep;
+    
+    % turkos
+    p(i,15:20,2) = 1*colorStep;
+    p(i,15:20,3) = 1*colorStep;
+    
+    % bl�
+    p(i,21:25,3) = 1*colorStep;
+    
+    % rosa
+    p(i,26:30,1) = 1*colorStep;
+    p(i,26:30,3) = 1*colorStep;
+
 
     if mod(i,size(p)/nrOfHue) == 0 
         colorStep = colorStep - hueStep;
@@ -66,8 +84,8 @@ for i = 1:size(p)
 end
 
 
-% figure(2)
-%imshow(defaultPurl);
+ figure(2)
+imshow(p);
 
 % testar att ändra färgern till rött
 % [row column dim] = size(defaultPurl);
@@ -116,8 +134,7 @@ org_grund = imread('org_grund.png');
 org_invert = imread('org_invert.png');
 original = imread('Original.jpg');
 
-figure(7)
-imshow(org_pretty)
+
 % figure(8)
 % imshow(org_duo)
 % figure(9)
@@ -174,11 +191,19 @@ sample_pretty_test2 = imresize( org_pretty , 0.01);
 %figure(15)
 %imshow(rep_pretty)
 tempColor = zeros(1,3);
-tempColor = setColor(tempColor, 1, 0, 0)
+tempColor = setColor(tempColor, 1, 0, 0);
 %figure(30)
 %imshow(tempColor)
-palletteColor = findColor(p, tempColor)
+% palletteColor = findColor(p, tempColor)
 
+
+
+rep_pretty = createReproduction(original, defaultPurl, p)
+
+figure(60)
+imshow(original)
+figure(70)
+imshow(rep_pretty)
 
 % hur stor ska reproduktionen vara?
 % Säg att reproduktionen inte får vara dubbelt så stor än originalet?
