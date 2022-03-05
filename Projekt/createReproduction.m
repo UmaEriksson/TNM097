@@ -1,7 +1,9 @@
-function [rep] = createReproduction(org, purl, pallette)
+function [rep] = createReproduction(org, purl, pallette, s)
+
+org = im2double(org);
 
 % ju mindre org resizseas till. desto större blir pärlorna
-org_reSize = imresize( org , 0.05);
+org_reSize = imresize( org , s, 'bicubic');
 
 
 size(org_reSize)

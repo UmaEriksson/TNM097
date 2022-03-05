@@ -14,12 +14,12 @@ currentHue = 1;
 % skapa pallette
 p = zeros(30,30,3);
 
-% skapa färger 
+% skapa fÃ¤rger 
 p(:,1:10,1) = 1;
 p(:,11:20,2) = 1;
 p(:,21:30,3) = 1;
 
-%skapa olika nyanser för färgerna ovan
+%skapa olika nyanser fÃ¶r fÃ¤rgerna ovan
 for i = 1:size(p)
     p(i,1:10,1) = 1*colorStep;
     p(i,11:20,2) = 1*colorStep;
@@ -34,7 +34,7 @@ end
 % figure(1)
 % imshow(p);
 
-%% skapa temp reproduktions bild med defult pärlor
+%% skapa temp reproduktions bild med defult pÃ¤rlor
 
 defaultPurl = im2double(imread('defaultPurl.png'));
 defaultPurl = imresize( defaultPurl , 0.05 );
@@ -48,28 +48,28 @@ hueStep = 1/nrOfHue;
 currentHue = 1;
 
 p = zeros(30,30,3);
-% skapa färger 
+% skapa fÃ¤rger 
 p(:,1:10,1) = 1;
 p(:,11:20,2) = 1;
 p(:,21:30,3) = 1;
 
-%skapa olika nyanser för färgerna ovan
+%skapa olika nyanser fÃ¶r fÃ¤rgerna ovan
 for i = 1:size(p)
-    % R�d
+    % Röd
     p(i,1:5,1) = 1*colorStep;
     
     % gul?
     p(i,6:10,1) = 1*colorStep;
     p(i,6:10,2) = 1*colorStep;
 
-    % gr�n
+    % grön
     p(i,11:15,2) = 1*colorStep;
     
     % turkos
     p(i,15:20,2) = 1*colorStep;
     p(i,15:20,3) = 1*colorStep;
     
-    % bl�
+    % blå
     p(i,21:25,3) = 1*colorStep;
     
     % rosa
@@ -87,7 +87,7 @@ end
  figure(2)
 imshow(p);
 
-% testar att ändra färgern till rött
+% testar att Ã¤ndra fÃ¤rgern till rÃ¶tt
 % [row column dim] = size(defaultPurl);
 % for i = 1:row
 %     for j= 1:column
@@ -119,14 +119,14 @@ imshow(p);
 
 
 
-% testar att skapa en ny pärla 
+% testar att skapa en ny pÃ¤rla 
 newPurl = setColor(defaultPurl, 0, 1, 1);
 % figure(7)
 % imshow(newPurl)
 
 
 
-% läsa in lite orignal bilder
+% lÃ¤sa in lite orignal bilder
 org_pretty = im2double(imread('org_pretty.png'));
 org_duo = im2double(imread('org_duo.png'));
 org_gray = imread('org_gray.png');
@@ -196,18 +196,18 @@ tempColor = setColor(tempColor, 1, 0, 0);
 %imshow(tempColor)
 % palletteColor = findColor(p, tempColor)
 
+org = imread('OrangeSoldat.png');
 
-
-rep_pretty = createReproduction(original, defaultPurl, p)
+rep = createReproduction(org, defaultPurl, p);
 
 figure(60)
-imshow(original)
+imshow(org)
 figure(70)
-imshow(rep_pretty)
+imshow(rep)
 
 % hur stor ska reproduktionen vara?
-% Säg att reproduktionen inte får vara dubbelt så stor än originalet?
-% eller nej, pärlorna ska ha samma storlek?
+% SÃ¤g att reproduktionen inte fÃ¥r vara dubbelt sÃ¥ stor Ã¤n originalet?
+% eller nej, pÃ¤rlorna ska ha samma storlek?
 
 %%
 
@@ -222,7 +222,7 @@ imshow(rep_pretty)
 % %counter
 % m = 1;
 % 
-% %hur många steg
+% %hur mÃ¥nga steg
 % s = 1/n;
 % 
 % for n_r = 0:s:1
@@ -257,7 +257,7 @@ imshow(rep_pretty)
 
 
 
-% skapa en pärla
+% skapa en pÃ¤rla
 N=100;
 D=ones(N,N);
 i0=10;
