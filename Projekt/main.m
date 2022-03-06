@@ -165,15 +165,23 @@ clear;
 
 load('palette.mat');
 
-pA = im2double(imread('colorMap.jpeg')); % antal nysanser: 168*300 st 
-pB = imresize( pA , 0.05 );
-% 
-% figure(3)
-% imshow(pA)
-% figure(4)
-% imshow(pB)
+colorMap = im2double(imread('colorMap.jpeg')); % antal nysanser: 168*300 st 
+bigPalette = imresize( colorMap , [10,10]); % stor palette
+smolPalette = imresize( bigPalette , 0.7); % liten palette
 
-thePalette = pallette;
+% figure(3)
+% imshow(colorMap)
+% figure(4)
+imshow(bigPalette)
+% figure(5)
+% imshow(smolPalette)
+
+x = abs(diff(smolPalette));
+mean(mean(mean(x)))
+
+
+
+thePalette = bigPalette;
 
 % Purl
 defaultPurl = im2double(imread('defaultPurl.png'));
@@ -183,26 +191,45 @@ defaultPurl(:,:,2) = defaultPurl(:,:,2) >= 0.5;
 defaultPurl(:,:,3) = defaultPurl(:,:,3) >= 0.5;
 [purl_row, purl_col, purl_dim] = size(defaultPurl);
 
-% Original bilder 
-org_grund = imread('org_grund.png');
-org_soldat = imread('OrangeSoldat.png');
-org_peppers = imread('peppers_color.tif');
+% % Original bilder 
+% org_grund = imread('org_grund.png');
+ org_soldat = imread('OrangeSoldat.png');
+% org_peppers = imread('peppers_color.tif');
 org_text_mette = imread('text_mette.jpg');
-org_temp = imread('temp.png');
+% org_temp = imread('temp.png');
+
+% porträtt
+org_me = imread('temp.png');
+% figure(6)
+% imshow(org_me)
+
+% lanskap
+org_landskap = imread('landskap.png');
+% figure(7)
+% imshow(org_landskap)
+
+% ljus bild 
+org_light = imread('lightPic.png');
+% figure(8)
+% imshow(org_light)
+
+% mörk bild
+org_vastervik = imread('Vastervik.jpg');
+% figure(9)
+% imshow(org_vastervik)
 
 
+org = org_soldat;
+[X, map] = rgb2ind(org, 32,'nodither');
+org = ind2rgb(X, map);
 
 
-org = org_grund;
+% figure(11)
+% imshow(map)
 
 % ba gör bilden lite mer hanterlig
-org = imresize( org , [200 200]);
-
-
+org = imresize( org , [550 550]);
 [org_row, org_col, org_dim] = size(org);
-
-
-%sizeFactor = 1- ((purl_row*purl_col)/(org_row*org_col))
 
 sizeFactor = (1/purl_row) ;
 
@@ -213,6 +240,9 @@ figure(101)
 imshow(org)
 figure(202)
 imshow(rep)
+
+save('org_me','org');
+save('rep_me','rep');
 
 [rep_row, rep_col, rep_dim] = size(rep);
 
