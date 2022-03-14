@@ -1,4 +1,4 @@
-%% main
+% % main
 clear;
 clc;
 
@@ -160,6 +160,7 @@ imshow(pallette);
 save('palette.mat','pallette');
 
 %%
+
 clc;
 clear;
 
@@ -169,16 +170,26 @@ colorMap = im2double(imread('colorMap.jpeg')); % antal nysanser: 168*300 st
 bigPalette = imresize( colorMap , [10,10]); % stor palette
 smolPalette = imresize( bigPalette , 0.7); % liten palette
 
-% figure(3)
-% imshow(colorMap)
+subPallete = imresize( colorMap , 0.075);
+
+% figure(1)
+% imshow(subPallete)
+% 
+% % figure(3)
+% % imshow(colorMap)
 % figure(4)
-imshow(bigPalette)
-% figure(5)
+%  imshow(bigPalette)
+%figure(5)
 % imshow(smolPalette)
 
-x = abs(diff(smolPalette));
-mean(mean(mean(x)))
+% hur stor bli skillnaden mellan färger, efter subjektivt anvgörande?
 
+
+x = abs(diff(rgb2lab(subPallete)));
+colorDiff = min(min(min (x))) % prcis när det börjar bli svårt att urskilja en nyans från en annan: diff = 8.6948
+
+x = abs(diff(rgb2lab(smolPalette)));
+colorDiff = min(min(min(x))) 
 
 
 thePalette = bigPalette;
@@ -192,10 +203,11 @@ defaultPurl(:,:,3) = defaultPurl(:,:,3) >= 0.5;
 [purl_row, purl_col, purl_dim] = size(defaultPurl);
 
 % % Original bilder 
-% org_grund = imread('org_grund.png');
+org_gaiaTemp = imread('gaiaTemp.jpg');
  org_soldat = imread('OrangeSoldat.png');
 % org_peppers = imread('peppers_color.tif');
 org_text_mette = imread('text_mette.jpg');
+org_original = imread('Original.jpg');
 % org_temp = imread('temp.png');
 
 % porträtt
@@ -218,35 +230,173 @@ org_vastervik = imread('Vastervik.jpg');
 % figure(9)
 % imshow(org_vastervik)
 
-
-org = org_soldat;
-[X, map] = rgb2ind(org, 32,'nodither');
-org = ind2rgb(X, map);
-
-
-% figure(11)
-% imshow(map)
-
-% ba gör bilden lite mer hanterlig
-org = imresize( org , [550 550]);
+% BYT BILD HÄR!!!!!!!
+org = org_me;
+org = im2double(org);
 [org_row, org_col, org_dim] = size(org);
 
-sizeFactor = (1/purl_row) ;
+org_f = (0.2*org_row)/org_row;
 
-
-rep = createReproduction(org, defaultPurl, thePalette, sizeFactor);
-
-figure(101)
+org = imresize( org , [org_row*org_f org_col*org_f], 'bicubic');
+figure(10)
 imshow(org)
+title('Original');
+
+% hur mycket vill vi nyanser vill vi plocka ut ur den indexerade bilden?
+% antar att vi vill att den minsta skillnaden mellan två färger får minst
+% vara colorDiff
+
+%C = unique(org(:,:, 1));
+
+
+
+
+
+temp = org;
+temp(:,:,1) = temp(:,:,1) + temp(:,:,2) + temp(:,:,2);
+temp2 = unique(temp(:,:,1));
+[nrOfIndColors temp] = size(temp2);
+
+nrOfIndColors
+
+
+
+% 
+% % [pal_row, pal_row, pal_dim] = size(bigPalette);
+% [X, map] = rgb2ind(org, nrOfIndColors,'nodither');
+% org_ind = ind2rgb(X, map);
+% currentDiff = abs(min(min(diff(rgb2lab(org_ind)))))
+% % [pal_row, pal_row, pal_dim] = size(bigPalette);
+% 
+% nrOfIndColors
+% 
+% while currentDiff < colorDiff
+% 
+%     [X, map] = rgb2ind(org, nrOfIndColors,'nodither');
+%     org_ind = ind2rgb(X, map);
+% 
+%    % antal = size(unique(org_ind));
+% 
+%     x = abs(diff(rgb2lab(org_ind)));
+%     currentDiff = min(min(min(x)))
+% 
+%     nrOfIndColors = nrOfIndColors-1;
+% 
+% end
+% 
+ 
+
+nrOfIndColors = round(nrOfIndColors * 0.001)
+%%
+
+%[X, map] = rgb2ind(org, nrOfIndColors,'nodither');
+
+[X, map] = rgb2ind(org, 32,'nodither');
+org_ind = ind2rgb(X, map);
+
+% imwrite(org_ind,'0_ind.png');
+
+%org_ind = imresize( org_ind , [org_row*org_f org_col*org_f]);
+figure(5)
+imshow(org_ind)
+title('Indexerad');
+
+sizeFactor = (1/purl_row) ;
+% sizeFactor_col = (1/purl_col) 
+% sizeFactor = [sizeFactor_row sizeFactor_col]
+
+% create the reproduction
+
+%org_nr = size(unique(org))
+
+%ind_nr = size(unique(org_ind))
+
+
+
+%%
+
+delete(gcp('nocreate')); 
+parpool('local',2);
+
+imwrite(org,'00_org.png');
+imwrite(org_ind,'00_ind.png');
+
+tic
+rep_small = createReproduction(org, defaultPurl, smolPalette, sizeFactor);
+toc 
+
+imwrite(rep_small,'00_rep_small_white.png');
+%%
+delete(gcp('nocreate')); 
+parpool('local',2);
+
+tic
+rep_big = createReproduction(org, defaultPurl, bigPalette, sizeFactor);
+toc
+
+imwrite(rep_big,'00_rep_big_white.png');
+
+%%
+tic
+rep_ind = createReproduction(org_ind, defaultPurl, bigPalette, sizeFactor);
+toc
+
+imwrite(rep_ind,'00_rep_ind_white.png');
+
+
+
+figure(555)
+%montage({org_soldat,org, org_ind, rep_small, rep_big, rep_ind})
+%%
+figure(101)
+imshow(rep_small)
+title('Reproduktion med LITEN palett');
 figure(202)
-imshow(rep)
+imshow(rep_big)
+title('Reproduktion med STOR palett');
+figure(303)
+imshow(rep_ind)
+title('Reproduktion med OPTIMERAD palett/ originalbild');
 
-save('org_me','org');
-save('rep_me','rep');
+%%
+clc;
+[rep_row, rep_col, rep_dim] = size(rep_small);
+f = org_row/rep_row;
 
-[rep_row, rep_col, rep_dim] = size(rep);
+org = im2double(org); % obs! gör detta annars jämför vi inte double mot double!
+[met_small_mean, met_small_max] = getDeltaE(org,rep_small);
+[met_big_mean, met_big_max] = getDeltaE(org,rep_big);
+[met_ind_mean, met_ind_max] = getDeltaE(org,rep_ind);
+
+Data = [  met_small_mean      met_small_max     
+          met_big_mean        met_big_max       
+          met_ind_mean        met_ind_max       
+          ];
+Data2 = {'rep_smallP'; 'rep_bigP'; 'rep_bigP_ind'};
+%VarNames = {'Reproduction', 'deltaE_mean', 'deltaE_max', 'deltaE_min'};
+VarNames = {'Reproduction', 'deltaE_mean', 'deltaE_max'};
+T = table(Data2(:,1),Data(:,1),Data(:,2), 'VariableNames',VarNames)
+
+%%
+
+imwrite(org,'0_org.png');
+imwrite(org_ind,'0_ind.png');
+imwrite(rep_small,'0_rep_small_white.png');
+imwrite(rep_big,'0_rep_big.png');
+imwrite(rep_ind,'0_rep_ind.png');
 
 
+%read image 
+%tt= imshow(image) ;
+%save your image other  location with any name save desktop or any folder also
+% baseFileName = sprintf('img #%d.png', org);
+% fullFileName = fullfile('/MATLAB Drive/Rep/Project/pictures/soldat', baseFileName);
+% imwrite(org, fullFileName);
+
+
+%%
+
+%rep = imresize(rep, [550 550]);
 
 % betyg 3: 
 % - euclidian jämföra 
@@ -276,21 +426,13 @@ RGB_org_HVS_Lab = rgb2lab(RGB_org_HVS); % enhets oberoende färgrymd -> till CIE
 
 
 % gör reproduktionen lika stor som originalet
-f = org_row/rep_row;
+f = org_row/rep_row
 
 RGB_rep_HVS_Lab = imresize( RGB_rep_HVS_Lab , f, 'bicubic');
 
+size(RGB_rep_HVS_Lab)
+size(RGB_org_HVS_Lab)
 
 % Jämför originalet och reproduktionen
 % reproduktionens kalanaler först, sedan oriiginalet
-[Mean_rep_matrix_HVS, Max_rep_matrix_HVS] = EuclidDis(RGB_rep_HVS_Lab(:,:,1), RGB_rep_HVS_Lab(:,:,2), RGB_rep_HVS_Lab(:,:,3), RGB_org_HVS_Lab(:,:,1), RGB_org_HVS_Lab(:,:,2), RGB_org_HVS_Lab(:,:,3));
-Mean_rep_HVS = mean(Mean_rep_matrix_HVS)
-Max_rep_HVS = max(Mean_rep_matrix_HVS)
-
-
-
-%kvalitetsmatt = Max_rep_HVS
-
-
-
-
+%[Mean_rep_matrix_HVS, Max_rep_matrix_HVS] = EuclidDis(RGB_rep_HVS_Lab(:,:,1), RGB_rep

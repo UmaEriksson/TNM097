@@ -20,6 +20,8 @@ Delta_E = sqrt(DL.^2 + DA.^2 + DB.^2);
 
 Mean = mean(Delta_E);
 Max = max(Delta_E);
+%Min = min(Delta_E);
+
 
 
 
